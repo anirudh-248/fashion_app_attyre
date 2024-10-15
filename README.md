@@ -17,18 +17,16 @@ The caching implementation ensures that content updates (additions or deletions 
 ### Performance and Scalability
 
 1) Efficient Data Querying:
+    a) *Paginated Queries*: By leveraging DRF’s PageNumberPagination, only the required subset of video records is retrieved from the database for each request. This reduces memory overhead and optimizes response time for users requesting specific pages.
+    b) *Optimized Querysets*: Django’s ORM enables efficient querying through lazy evaluation, ensuring that only the necessary data is fetched when needed. Additionally, the API can be optimized further with database indexing for fields used in queries, such as sorting or filtering criteria (e.g., date added, views, or other metadata).
 
-*Paginated Queries*: By leveraging DRF’s PageNumberPagination, only the required subset of video records is retrieved from the database for each request. This reduces memory overhead and optimizes response time for users requesting specific pages.
-
-*Optimized Querysets*: Django’s ORM enables efficient querying through lazy evaluation, ensuring that only the necessary data is fetched when needed. Additionally, the API can be optimized further with database indexing for fields used in queries, such as sorting or filtering criteria (e.g., date added, views, or other metadata).
-
-2) Redis Caching:
+3) Redis Caching:
 Caching paginated results reduces the load on the database, particularly for frequently accessed pages. Redis, being an in-memory data store, provides extremely low-latency access to cached data, which significantly enhances the response time. The graceful fallback mechanism ensures that even if Redis is unavailable, the system continues to operate by serving data directly from the database.
 
-3) Signals for Cache Invalidation:
+4) Signals for Cache Invalidation:
 By connecting Django signals (post_save, post_delete) to the Video model, cache invalidation happens automatically whenever there is a change to the video dataset (addition, update, or deletion). This ensures that no stale data is served, maintaining the integrity of the data in the cache.
 
-4) Scalable API Design:
+5) Scalable API Design:
 The API design considers future scalability with support for increasing numbers of video records and users. As the number of videos grows, the API remains responsive due to the combination of pagination and Redis caching. Redis can be horizontally scaled with clusters, allowing the caching layer to handle high-traffic loads.
 
 ### Additional Features
