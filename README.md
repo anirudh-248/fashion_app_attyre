@@ -17,6 +17,7 @@ The caching implementation ensures that content updates (additions or deletions 
 ### Performance and Scalability
 
 1) Efficient Data Querying:
+
 *Paginated Queries*: By leveraging DRF’s PageNumberPagination, only the required subset of video records is retrieved from the database for each request. This reduces memory overhead and optimizes response time for users requesting specific pages.
 
 *Optimized Querysets*: Django’s ORM enables efficient querying through lazy evaluation, ensuring that only the necessary data is fetched when needed. Additionally, the API can be optimized further with database indexing for fields used in queries, such as sorting or filtering criteria (e.g., date added, views, or other metadata).
